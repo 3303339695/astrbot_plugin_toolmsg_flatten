@@ -8,7 +8,7 @@ desc: >-
 help: >-
   装上即可，无需命令。配置里可调：换成哪一种身份、一次提问最多来回几轮、单条与合计字数上限。
   插件卡片上的“查看界面”是抓包页，能看到每次请求的真实内容。
-version: v4.2.0
+version: v4.2.1
 author: 咱
-repo: ""
+repo: https://github.com/3303339695/astrbot_plugin_toolmsg_flatten
 astrbot_version: ">=4.20.0"

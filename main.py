@@ -473,7 +473,7 @@ def _install_send_patch() -> bool:
     PLUGIN_NAME,
     "咱",
     "发送前把“工具回传”整段原样换身份（只改身份），避开上游要求函数名的拒收",
-    "4.2.0",
+    "4.2.1",
 )
 class ToolMessageFlattenPlugin(Star):
     """只在发请求那一刻动手：换掉工具回传，别的都不碰。"""
