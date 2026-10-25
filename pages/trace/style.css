@@ -1,0 +1,273 @@
+/* 配色变量沿用现有插件页的约定，避免各页面观感打架 */
+:root {
+  color-scheme: light;
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #111111;
+  --muted: #999999;
+  --line: #eaeaea;
+  --line-strong: #d7d7d7;
+  font-family:
+    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #111111;
+  --surface: #151515;
+  --text: #f1f1f1;
+  --muted: #868686;
+  --line: #292929;
+  --line-strong: #3a3a3a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* 整页不滚动：头固定，左右两栏各自滚动 */
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+}
+
+.page {
+  height: 100%;
+  min-height: 0;
+  padding: 20px 22px 22px;
+  max-width: 1500px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex: 0 0 auto;
+}
+
+h1 {
+  font-size: 20px;
+  margin: 0 0 6px;
+}
+
+.hint {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--muted);
+  max-width: 720px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+select,
+.btn {
+  font: inherit;
+  font-size: 13px;
+  padding: 7px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+
+select {
+  min-width: 150px;
+}
+
+.btn:hover {
+  border-color: var(--text);
+}
+
+.btn-danger {
+  color: #c0392b;
+  border-color: #e9b8b2;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 360px minmax(0, 1fr);
+  gap: 16px;
+  flex: 1 1 auto;
+  min-height: 0; /* 关键：允许两栏内部各自滚动 */
+  overflow: hidden;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* 窄屏（手机上）就上下排：整页恢复成普通滚动，别搞两个小滚动条 */
+@media (max-width: 900px) {
+  html,
+  body {
+    height: auto;
+    overflow: auto;
+  }
+
+  .page {
+    height: auto;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+
+  .panel {
+    height: auto;
+    overflow: visible;
+  }
+}
+
+.entry-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.entry {
+  text-align: left;
+  border: 1px solid var(--line);
+  background: transparent;
+  border-radius: 8px;
+  padding: 9px 10px;
+  cursor: pointer;
+  font: inherit;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.entry:hover {
+  border-color: var(--line-strong);
+}
+
+.entry.active {
+  border-color: var(--text);
+}
+
+.entry .line1 {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 12.5px;
+}
+
+.entry .line2 {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.tag {
+  display: inline-block;
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  color: var(--muted);
+  margin-right: 6px;
+}
+
+.tag.warn {
+  color: #c0392b;
+  border-color: #e9b8b2;
+}
+
+.meta {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.8;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 10px;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 13px;
+  margin: 16px 0 8px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.block {
+  margin: 0;
+  padding: 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.messages {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.message {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 11px;
+}
+
+.message .role {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-bottom: 5px;
+}
+
+.message .body {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.empty {
+  color: var(--muted);
+  font-size: 13px;
+  text-align: center;
+  padding: 30px 0;
+}

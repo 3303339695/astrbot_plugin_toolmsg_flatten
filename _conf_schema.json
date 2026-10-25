@@ -1,0 +1,70 @@
+{
+    "enable": {
+        "description": "启用工具回传改写",
+        "hint": "开启后，发给服务商的请求里不再出现“工具回传”那种身份（就是会让上游报 function_response.name 为空的那一条）。存储不受影响。",
+        "type": "bool",
+        "default": true
+    },
+    "apply_to_providers": {
+        "description": "只对这些服务商生效",
+        "hint": "填关键字，多个用英文逗号分隔；留空表示对所有服务商生效。默认只对名字或模型名里带 gemini 的生效，避免影响本来正常的服务商。",
+        "type": "string",
+        "default": "gemini"
+    },
+    "record_role": {
+        "description": "换成哪一种身份",
+        "hint": "默认 system。工具回传的原文整段搬进这个身份里，外面不加任何壳、不改一个字。system 和 user 实测都能通。",
+        "type": "string",
+        "options": ["system", "user"],
+        "labels": ["system（默认）", "user"],
+        "default": "system"
+    },
+    "max_tool_rounds": {
+        "description": "一次提问里工具最多来回几轮",
+        "hint": "默认 4，范围 1～12。到上限就把这次请求的工具清单收走，并注入 AstrBot 原版那句收尾提示。只影响这一次请求，下一句提问重新计数。",
+        "type": "int",
+        "default": 4
+    },
+    "result_max_chars": {
+        "description": "单条工具回传最多带多少字",
+        "hint": "默认 800。超了只把多余的部分省略（末尾的提醒保留），不做任何格式改写。范围 200～8000。",
+        "type": "int",
+        "default": 800
+    },
+    "round_max_chars": {
+        "description": "一次工具往返合计最多带多少字",
+        "hint": "默认 2000。一次并行开五六个工具时，靠这条把总量压住，超出的条目省略并注明。范围 400～20000。",
+        "type": "int",
+        "default": 2000
+    },
+    "trace": {
+        "description": "接口抓包（排查用）",
+        "hint": "开启后，每次真正发给模型的完整请求和模型的回答都会落盘到插件数据目录下的 api_trace 目录，按天分文件。排查完建议关掉，否则文件增长很快。",
+        "type": "bool",
+        "default": true
+    },
+    "trace_max_chars": {
+        "description": "抓包时单条内容最多记多少字",
+        "hint": "0 表示不截断（推荐）。数字太大会让文件增长更快。",
+        "type": "int",
+        "default": 0
+    },
+    "trace_keep_entries": {
+        "description": "抓包每天最多保留多少条",
+        "hint": "默认 30。当天记录超过这个数时，只留最新的这些条，旧的自动删掉。填 0 表示不限。",
+        "type": "int",
+        "default": 30
+    },
+    "trace_keep_days": {
+        "description": "抓包最多保留几天",
+        "hint": "默认 30。超过这个天数的最旧记录会被自动删掉。范围 1～365。",
+        "type": "int",
+        "default": 30
+    },
+    "trace_console": {
+        "description": "抓包时在日志里打一行摘要",
+        "hint": "每次抓包后打一行很短的信息：工具几个、消息几条、模型回报什么。",
+        "type": "bool",
+        "default": true
+    }
+}

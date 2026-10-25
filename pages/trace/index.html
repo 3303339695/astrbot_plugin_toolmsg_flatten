@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>接口抓包</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="header">
+        <div>
+          <h1>接口抓包</h1>
+          <p class="hint">
+            这里显示每次真正发给模型的内容：带了多少工具、系统提示写了什么、历史消息有哪些、模型回报了什么。
+          </p>
+        </div>
+        <div class="actions">
+          <label class="field">
+            <span>日期</span>
+            <select id="day-select"></select>
+          </label>
+          <label class="field">
+            <span>模型</span>
+            <select id="model-select"></select>
+          </label>
+          <button id="refresh" class="btn" type="button">刷新</button>
+          <button id="clear" class="btn btn-danger" type="button">清空当天</button>
+        </div>
+      </header>
+
+      <main class="layout">
+        <section class="panel list-panel">
+          <div id="entry-list" class="entry-list"></div>
+          <p id="list-empty" class="empty" hidden>这一天还没有记录。</p>
+        </section>
+
+        <section class="panel detail-panel">
+          <p id="detail-empty" class="empty">左边点一条记录，这里显示完整内容。</p>
+          <div id="detail" hidden>
+            <div id="detail-meta" class="meta"></div>
+            <h2 class="section-title">第一条系统消息（下面消息列表里也有同一条，这里单独拎出来方便看）</h2>
+            <pre id="detail-system" class="block"></pre>
+            <h2 class="section-title">消息</h2>
+            <div id="detail-messages" class="messages"></div>
+            <h2 class="section-title">模型回答</h2>
+            <pre id="detail-reply" class="block"></pre>
+          </div>
+        </section>
+      </main>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
