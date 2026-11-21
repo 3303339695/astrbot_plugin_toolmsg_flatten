@@ -6,3 +6,10 @@ Thumbs.db
 .idea/
 .vscode/
 *.log
+*.bak-*
+*.bak
+*.zip
+_trace_pycache_verify/
+_历史版本/
+astrbot_plugin_toolmsg_flatten/
+data/

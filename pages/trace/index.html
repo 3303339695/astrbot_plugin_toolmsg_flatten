@@ -9,45 +9,147 @@
   <body>
     <div class="page">
       <header class="header">
-        <div>
+        <div class="title-row">
           <h1>接口抓包</h1>
-          <p class="hint">
-            这里显示每次真正发给模型的内容：带了多少工具、系统提示写了什么、历史消息有哪些、模型回报了什么。
-          </p>
+          <p
+            id="page-hint"
+            class="hint"
+            title="这里显示每次真正发给模型的内容：带了多少工具、系统提示写了什么、历史消息有哪些、模型回报了什么。回车检索会同时过滤左边列表，并把右侧详情滚到第一个命中处。"
+          >每次请求一行，点开看完整内容</p>
+          <div class="tools" role="toolbar" aria-label="页面操作">
+            <button id="files-toggle" class="icon-btn" type="button" title="抓包文件" aria-label="抓包文件">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M3 4.2h10M3 8h10M3 11.8h10" />
+              </svg>
+            </button>
+            <button id="refresh" class="icon-btn" type="button" title="重新读取抓包" aria-label="重新读取抓包">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M13.2 8a5.2 5.2 0 1 1-1.6-3.7" />
+                <path d="M13.4 2.4v3.3h-3.3" />
+              </svg>
+            </button>
+            <button id="stop-all" class="icon-btn" type="button" title="终止所有正在运行的任务（点两次确认）" aria-label="终止所有正在运行的任务">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <rect x="4.8" y="4.8" width="6.4" height="6.4" rx="1.1" />
+              </svg>
+            </button>
+            <button id="open-dir" class="icon-btn" type="button" title="打开抓包目录" aria-label="打开抓包目录">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M2 4.6h4.1l1.2 1.5H14v6.3H2z" />
+              </svg>
+            </button>
+            <button id="clear" class="icon-btn" type="button" title="清空当天记录（点两次确认）" aria-label="清空当天记录">
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M3.2 4.6h9.6" />
+                <path d="M6.4 4.6V3.2h3.2v1.4" />
+                <path d="M4.6 4.6l.6 8.2h5.6l.6-8.2" />
+              </svg>
+            </button>
+          </div>
         </div>
-        <div class="actions">
+
+        <div class="filter-row">
           <label class="field">
-            <span>日期</span>
-            <select id="day-select"></select>
+            <span class="field-label">日期</span>
+            <select id="day-select" class="control"></select>
           </label>
           <label class="field">
-            <span>模型</span>
-            <select id="model-select"></select>
+            <span class="field-label">模型</span>
+            <select id="model-select" class="control"></select>
           </label>
-          <button id="refresh" class="btn" type="button">刷新</button>
-          <button id="clear" class="btn btn-danger" type="button">清空当天</button>
+          <form id="search-form" class="search" role="search">
+            <input
+              id="search-input"
+              class="control search-input"
+              type="search"
+              placeholder="检索全部内容，回车应用"
+              aria-label="检索全部内容，回车应用"
+              autocomplete="off"
+              spellcheck="false"
+            />
+            <button id="search-go" class="btn btn-primary" type="submit">检索</button>
+            <button id="search-prev" class="btn btn-nav" type="button" title="上一个匹配" aria-label="上一个匹配" disabled>
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M4 10.2 8 6.2l4 4" />
+              </svg>
+            </button>
+            <button id="search-next" class="btn btn-nav" type="button" title="下一个匹配" aria-label="下一个匹配" disabled>
+              <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+                <path d="M4 5.8 8 9.8l4-4" />
+              </svg>
+            </button>
+            <span id="search-status" class="search-status" role="status" aria-live="polite"></span>
+          </form>
         </div>
       </header>
 
+      <div id="notice" class="notice" role="status" hidden>
+        <span id="notice-text" class="notice-text"></span>
+        <button id="notice-close" class="btn" type="button">关闭</button>
+      </div>
+
       <main class="layout">
-        <section class="panel list-panel">
-          <div id="entry-list" class="entry-list"></div>
-          <p id="list-empty" class="empty" hidden>这一天还没有记录。</p>
+        <section class="panel list-panel" aria-label="抓包记录列表">
+          <div class="list-head">
+            <span id="list-count" class="list-count"></span>
+            <span id="day-summary" class="day-summary"></span>
+          </div>
+          <div class="list-body">
+            <div id="entry-list" class="entry-list"></div>
+            <p id="list-empty" class="empty" hidden></p>
+          </div>
         </section>
 
-        <section class="panel detail-panel">
-          <p id="detail-empty" class="empty">左边点一条记录，这里显示完整内容。</p>
-          <div id="detail" hidden>
-            <div id="detail-meta" class="meta"></div>
-            <h2 class="section-title">第一条系统消息（下面消息列表里也有同一条，这里单独拎出来方便看）</h2>
-            <pre id="detail-system" class="block"></pre>
-            <h2 class="section-title">消息</h2>
-            <div id="detail-messages" class="messages"></div>
-            <h2 class="section-title">模型回答</h2>
-            <pre id="detail-reply" class="block"></pre>
+        <section class="panel detail-panel" aria-label="记录详情">
+          <div id="detail-head" class="detail-head" hidden>
+            <details id="head-fold" class="head-fold">
+              <summary class="head-summary">
+                <span id="detail-time" class="detail-time"></span>
+                <span id="detail-state" class="state"></span>
+                <span id="detail-duration" class="detail-duration"></span>
+                <span id="detail-badges" class="detail-badges"></span>
+              </summary>
+              <div id="detail-usage" class="detail-usage"></div>
+              <div id="detail-meta" class="detail-meta"></div>
+              <div id="detail-health" class="detail-health" hidden></div>
+              <div id="detail-sources" class="detail-sources" hidden></div>
+            </details>
+          </div>
+
+          <div class="detail-scroll">
+            <p id="detail-empty" class="empty">左边点一条记录，这里显示完整内容。</p>
+            <div id="detail" hidden>
+              <div id="detail-system" class="system-block" hidden></div>
+              <h2 id="message-title" class="section-title">请求消息</h2>
+              <div id="detail-messages" class="messages"></div>
+              <details id="request-parameters" class="request-parameters" hidden>
+                <summary>其他请求参数</summary>
+                <pre id="detail-parameters" class="block"></pre>
+              </details>
+              <h2 class="section-title">模型回复</h2>
+              <div id="detail-reply" class="reply"></div>
+            </div>
           </div>
         </section>
       </main>
+
+      <div id="files-popover" class="files-popover" hidden>
+        <div class="files-popover-head">
+          <span class="files-title">抓包文件</span>
+          <span id="files-summary" class="files-meta">正在读取…</span>
+          <button id="files-close" class="icon-btn" type="button" title="关闭" aria-label="关闭">
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M4 4l8 8M12 4l-8 8" />
+            </svg>
+          </button>
+        </div>
+        <div class="files-bar">
+          <code id="files-dir" class="files-dir"></code>
+          <button id="files-refresh" class="btn" type="button">刷新</button>
+        </div>
+        <div id="files-list" class="files-list"></div>
+        <pre id="files-preview" class="block files-preview" hidden></pre>
+      </div>
     </div>
     <script type="module" src="./app.js"></script>
   </body>
