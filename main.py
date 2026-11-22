@@ -697,8 +697,8 @@ def _install_send_patch() -> bool:
 
 @register(
     PLUGIN_NAME,
-    "咱",
-    "发送前把“工具回传”整段原样换身份（只改身份），避开上游要求函数名的拒收",
+    "3303339695",
+    "在请求发出前动手术：搜索只掏摘要、会话历史交给助手模型整理、看不了图的模型借图片转述、请求体检、提示词来源追踪、抓包排障",
     "5.2.0",
 )
 class ToolMessageFlattenPlugin(Star):
