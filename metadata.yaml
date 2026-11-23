@@ -24,7 +24,7 @@ help: >-
   一键终止所有会话正在跑的请求（点两次确认）。
   旧的“工具回传换身份”和轮次闸门作为兼容选项保留，默认关闭。
 version: 5.2.0
-author: 咱
+author: 大肥鱼、coalblock666710
 repo: https://github.com/3303339695/astrbot_plugin_toolmsg_flatten
 astrbot_version: ">=4.29.0"
 tags:
